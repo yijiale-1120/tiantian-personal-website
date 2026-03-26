@@ -5,18 +5,8 @@ import {
   FaDatabase,*/
   FaExternalLinkAlt,
   /*FaLayerGroup,*/
-  FaGithub,
-  FaTwitter,
-  FaEnvelope,
 } from "react-icons/fa";
 
-/**
- * 易家乐 (Yijiale) Personal Showcase v4.0
- * 栈: React 18 + TS + Vite + Tailwind v4
- * 新增: 博客式内容 (文章列表, 时间线, 技能墙, 引用等)
- */
-
-// --- 核心配置 (未来可迁移至 headless CMS) ---
 const DATA = {
   profile: {
     name: "易家乐",
@@ -123,309 +113,247 @@ const DATA = {
     "我是一名热爱技术的开发者，拥有土木工程背景。转行以来，我始终保持着对新技术的好奇心，喜欢通过构建项目来深化理解。我相信优秀的代码不仅能够运行，更应具备可读性和可维护性。当前我正在探索全栈领域，希望未来能成为一名独立的创作者。",
 };
 
-export default function DeepSeek() {
+export default function Home() {
   const [activeTab, setActiveTab] = useState("works");
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafafa] text-slate-900 selection:bg-sky-100">
-      <div className="w-full px-6 py-10 md:px-12 lg:px-24 xl:px-32 grow">
-        {/* --- Header / Navigation --- */}
-        <nav className="mb-20 flex items-center justify-between font-mono">
-          <div className="flex items-center gap-4">
-            <span className="h-3 w-3 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="text-xs font-black uppercase tracking-tighter">
-              YIJIALE.SITE / 2026
-            </span>
-          </div>
-          <div className="flex gap-8 text-[11px] font-bold uppercase tracking-widest text-slate-400">
-            <a href=" " className="hover:text-black transition">
-              Contact
-            </a>
-            <a
-              href="https://github.com"
-              className="hover:text-black transition"
-            >
-              GitHub
-            </a>
-          </div>
-        </nav>
+    <div className="w-full px-6 py-10 md:px-12 lg:px-24 xl:px-32 grow">
+      {/* --- Header / Navigation --- */}
 
-        {/* --- Main Grid Layout --- */}
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-          {/* --- Left Column: Static Profile Card (保留原有) --- */}
-          <aside className="lg:col-span-4 space-y-8">
-            <div className="group relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-100 p-10 shadow-sm transition-all hover:shadow-xl">
-              <div className="relative z-10 space-y-6">
-                <div className="h-20 w-20 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-3xl font-black">
-                  乐
-                </div>
-                <div className="space-y-2">
-                  <h1 className="text-5xl font-black tracking-tighter italic">
-                    {DATA.profile.name}
-                  </h1>
-                  <p className="text-sky-600 font-mono font-bold">
-                    {DATA.profile.role}
-                  </p>
-                </div>
-                <p className="text-sm leading-relaxed text-slate-500">
-                  {DATA.profile.bio}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {DATA.profile.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 bg-slate-50 rounded-full text-[10px] font-bold text-slate-400 border border-slate-100"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+      {/* --- Main Grid Layout --- */}
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+        {/* --- Left Column: Static Profile Card (保留原有) --- */}
+        <aside className="lg:col-span-4 space-y-8">
+          <div className="group relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-100 p-10 shadow-sm transition-all hover:shadow-xl">
+            <div className="relative z-10 space-y-6">
+              <div className="h-20 w-20 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-3xl font-black">
+                乐
               </div>
-              <div className="absolute -right-10 -bottom-10 h-40 w-40 bg-sky-50 rounded-full blur-3xl opacity-50 group-hover:scale-150 transition-transform duration-700"></div>
-            </div>
-
-            {/* --- 技术墙 (非卡片形式，替换原有技能卡片) --- */}
-            <div className="p-8 bg-slate-900 rounded-[2.5rem]">
-              <h3 className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                Tech Stack
-              </h3>
+              <div className="space-y-2">
+                <h1 className="text-5xl font-black tracking-tighter italic">
+                  {DATA.profile.name}
+                </h1>
+                <p className="text-sky-600 font-mono font-bold">
+                  {DATA.profile.role}
+                </p>
+              </div>
+              <p className="text-sm leading-relaxed text-slate-500">
+                {DATA.profile.bio}
+              </p>
               <div className="flex flex-wrap gap-2">
-                {DATA.skills.map((skill) => (
+                {DATA.profile.tags.map((tag) => (
                   <span
-                    key={skill}
-                    className="px-3 py-1 bg-white/10 text-white/80 rounded-full text-[11px] font-medium hover:bg-white/20 transition"
+                    key={tag}
+                    className="px-3 py-1 bg-slate-50 rounded-full text-[10px] font-bold text-slate-400 border border-slate-100"
                   >
-                    {skill}
+                    {tag}
                   </span>
                 ))}
               </div>
             </div>
-          </aside>
+            <div className="absolute -right-10 -bottom-10 h-40 w-40 bg-sky-50 rounded-full blur-3xl opacity-50 group-hover:scale-150 transition-transform duration-700"></div>
+          </div>
 
-          {/* --- Right Column: Dynamic Content Area --- */}
-          <main className="lg:col-span-8 space-y-16">
-            {/* --- 现有标签页 (保留 Project Works 和 Roadmap/Log) --- */}
-            <div>
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex gap-8">
-                  <button
-                    onClick={() => setActiveTab("works")}
-                    className={`text-sm font-black uppercase tracking-widest transition ${activeTab === "works" ? "text-black" : "text-slate-300"}`}
-                  >
-                    Project Works
-                  </button>
-                  <button
-                    onClick={() => setActiveTab("roadmap")}
-                    className={`text-sm font-black uppercase tracking-widest transition ${activeTab === "roadmap" ? "text-black" : "text-slate-300"}`}
-                  >
-                    Roadmap / Log
-                  </button>
-                </div>
-                <span className="font-mono text-[10px] text-slate-300">
-                  Total_Items:{" "}
-                  {activeTab === "works"
-                    ? DATA.projects.length
-                    : DATA.roadmap.length}
+          {/* --- 技术墙 (非卡片形式，替换原有技能卡片) --- */}
+          <div className="p-8 bg-slate-900 rounded-[2.5rem]">
+            <h3 className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+              Tech Stack
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {DATA.skills.map((skill) => (
+                <span
+                  key={skill}
+                  className="px-3 py-1 bg-white/10 text-white/80 rounded-full text-[11px] font-medium hover:bg-white/20 transition"
+                >
+                  {skill}
                 </span>
-              </div>
+              ))}
+            </div>
+          </div>
+        </aside>
 
-              {activeTab === "works" ? (
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 mt-8">
-                  {DATA.projects.map((proj) => (
-                    <article
-                      key={proj.id}
-                      className="group flex flex-col justify-between p-8 bg-white border border-slate-100 rounded-4xl hover:shadow-2xl hover:shadow-slate-200/50 transition-all"
-                    >
-                      <div className="space-y-4">
-                        <div
-                          className={`h-2 w-12 rounded-full bg-linear-to-r ${proj.color}`}
-                        ></div>
-                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                          {proj.type}
-                        </h4>
-                        <h3 className="text-2xl font-black text-slate-900 group-hover:text-sky-600 transition">
-                          {proj.title}
-                        </h3>
-                        <p className="text-sm text-slate-500 leading-relaxed">
-                          {proj.desc}
-                        </p>
-                      </div>
-                      <div className="mt-8 flex items-center justify-between pt-6 border-t border-slate-50">
-                        <div className="flex gap-2">
-                          {proj.tech.map((t) => (
-                            <span
-                              key={t}
-                              className="text-[9px] font-bold text-slate-400"
-                            >
-                              #{t}
-                            </span>
-                          ))}
-                        </div>
-                        <FaExternalLinkAlt
-                          className="text-slate-300 group-hover:text-slate-900 transition cursor-pointer"
-                          size={14}
-                        />
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-6 mt-8">
-                  {DATA.roadmap.map((item, index) => (
-                    <div
-                      key={item.version}
-                      className="flex items-start gap-6 p-8 bg-white border border-slate-100 rounded-3xl relative overflow-hidden group"
-                    >
-                      <div className="text-xs font-mono font-bold text-sky-500">
-                        {item.version}
-                      </div>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-3">
-                          <h4 className="font-black text-slate-900">
-                            {item.title}
-                          </h4>
-                          <span
-                            className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${item.status === "Active" ? "bg-sky-500 text-white" : "bg-slate-100 text-slate-400"}`}
-                          >
-                            {item.status}
-                          </span>
-                        </div>
-                        <p className="text-sm text-slate-500">{item.details}</p>
-                      </div>
-                      {index !== DATA.roadmap.length - 1 && (
-                        <div className="absolute left-8.5 top-14 bottom-0 w-px bg-slate-100"></div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
+        {/* --- Right Column: Dynamic Content Area --- */}
+        <main className="lg:col-span-8 space-y-16">
+          {/* --- 现有标签页 (保留 Project Works 和 Roadmap/Log) --- */}
+          <div>
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex gap-8">
+                <button
+                  onClick={() => setActiveTab("works")}
+                  className={`text-sm font-black uppercase tracking-widest transition ${activeTab === "works" ? "text-black" : "text-slate-300"}`}
+                >
+                  Project Works
+                </button>
+                <button
+                  onClick={() => setActiveTab("roadmap")}
+                  className={`text-sm font-black uppercase tracking-widest transition ${activeTab === "roadmap" ? "text-black" : "text-slate-300"}`}
+                >
+                  Roadmap / Log
+                </button>
+              </div>
+              <span className="font-mono text-[10px] text-slate-300">
+                Total_Items:{" "}
+                {activeTab === "works"
+                  ? DATA.projects.length
+                  : DATA.roadmap.length}
+              </span>
             </div>
 
-            {/* ========== 新增内容区域 (非卡片形式) ========== */}
-
-            {/* --- 1. 最新文章 (垂直列表) --- */}
-            <section className="space-y-6">
-              <h2 className="text-2xl font-black tracking-tight">最新文章</h2>
-              <div className="divide-y divide-slate-100">
-                {DATA.posts.map((post) => (
-                  <div key={post.id} className="py-6 first:pt-0 last:pb-0">
-                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
-                      <span className="text-xs font-mono text-slate-400 sm:w-24 shrink-0">
-                        {post.date}
-                      </span>
-                      <div className="flex-1">
-                        <a
-                          href={post.link}
-                          className="text-lg font-bold text-slate-900 hover:text-sky-600 transition"
-                        >
-                          {post.title}
-                        </a>
-                        <p className="mt-1 text-sm text-slate-500 leading-relaxed">
-                          {post.excerpt}
-                        </p>
-                        <a
-                          href={post.link}
-                          className="inline-block mt-2 text-xs font-bold text-sky-600 hover:underline"
-                        >
-                          阅读更多 →
-                        </a>
+            {activeTab === "works" ? (
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 mt-8">
+                {DATA.projects.map((proj) => (
+                  <article
+                    key={proj.id}
+                    className="group flex flex-col justify-between p-8 bg-white border border-slate-100 rounded-4xl hover:shadow-2xl hover:shadow-slate-200/50 transition-all"
+                  >
+                    <div className="space-y-4">
+                      <div
+                        className={`h-2 w-12 rounded-full bg-linear-to-r ${proj.color}`}
+                      ></div>
+                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                        {proj.type}
+                      </h4>
+                      <h3 className="text-2xl font-black text-slate-900 group-hover:text-sky-600 transition">
+                        {proj.title}
+                      </h3>
+                      <p className="text-sm text-slate-500 leading-relaxed">
+                        {proj.desc}
+                      </p>
+                    </div>
+                    <div className="mt-8 flex items-center justify-between pt-6 border-t border-slate-50">
+                      <div className="flex gap-2">
+                        {proj.tech.map((t) => (
+                          <span
+                            key={t}
+                            className="text-[9px] font-bold text-slate-400"
+                          >
+                            #{t}
+                          </span>
+                        ))}
                       </div>
+                      <FaExternalLinkAlt
+                        className="text-slate-300 group-hover:text-slate-900 transition cursor-pointer"
+                        size={14}
+                      />
                     </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-6 mt-8">
+                {DATA.roadmap.map((item, index) => (
+                  <div
+                    key={item.version}
+                    className="flex items-start gap-6 p-8 bg-white border border-slate-100 rounded-3xl relative overflow-hidden group"
+                  >
+                    <div className="text-xs font-mono font-bold text-sky-500">
+                      {item.version}
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-3">
+                        <h4 className="font-black text-slate-900">
+                          {item.title}
+                        </h4>
+                        <span
+                          className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${item.status === "Active" ? "bg-sky-500 text-white" : "bg-slate-100 text-slate-400"}`}
+                        >
+                          {item.status}
+                        </span>
+                      </div>
+                      <p className="text-sm text-slate-500">{item.details}</p>
+                    </div>
+                    {index !== DATA.roadmap.length - 1 && (
+                      <div className="absolute left-8.5 top-14 bottom-0 w-px bg-slate-100"></div>
+                    )}
                   </div>
                 ))}
               </div>
-            </section>
+            )}
+          </div>
 
-            {/* --- 2. 技术足迹 (时间线，无卡片) --- */}
-            <section className="space-y-6">
-              <h2 className="text-2xl font-black tracking-tight">技术足迹</h2>
-              <div className="relative pl-6 border-l border-slate-200 ml-4 space-y-8">
-                {DATA.timeline.map((item, idx) => (
-                  <div key={idx} className="relative">
-                    <div className="absolute -left-[1.65rem] top-0 w-3 h-3 rounded-full bg-sky-400 border-2 border-white"></div>
-                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
-                      <span className="text-sm font-mono font-bold text-sky-600 sm:w-24 shrink-0">
-                        {item.year}
-                      </span>
-                      <p className="text-slate-700">{item.event}</p>
+          {/* ========== 新增内容区域 (非卡片形式) ========== */}
+
+          {/* --- 1. 最新文章 (垂直列表) --- */}
+          <section className="space-y-6">
+            <h2 className="text-2xl font-black tracking-tight">最新文章</h2>
+            <div className="divide-y divide-slate-100">
+              {DATA.posts.map((post) => (
+                <div key={post.id} className="py-6 first:pt-0 last:pb-0">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
+                    <span className="text-xs font-mono text-slate-400 sm:w-24 shrink-0">
+                      {post.date}
+                    </span>
+                    <div className="flex-1">
+                      <a
+                        href={post.link}
+                        className="text-lg font-bold text-slate-900 hover:text-sky-600 transition"
+                      >
+                        {post.title}
+                      </a>
+                      <p className="mt-1 text-sm text-slate-500 leading-relaxed">
+                        {post.excerpt}
+                      </p>
+                      <a
+                        href={post.link}
+                        className="inline-block mt-2 text-xs font-bold text-sky-600 hover:underline"
+                      >
+                        阅读更多 →
+                      </a>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* --- 3. 数据展示区 (数字指标，无边框) --- */}
-            <section className="grid grid-cols-2 md:grid-cols-4 gap-8 py-4">
-              {DATA.stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="text-4xl font-black text-slate-900">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs uppercase tracking-wider text-slate-400 mt-1">
-                    {stat.label}
                   </div>
                 </div>
               ))}
-            </section>
-
-            {/* --- 4. 关于我 (长篇叙事) --- */}
-            <section className="space-y-4">
-              <h2 className="text-2xl font-black tracking-tight">关于我</h2>
-              <div className="prose prose-slate max-w-none">
-                <p className="text-base leading-relaxed text-slate-600">
-                  {DATA.about}
-                </p>
-              </div>
-            </section>
-
-            {/* --- 5. 引用金句 --- */}
-            <blockquote className="py-8 px-6 bg-slate-100 rounded-2xl italic text-slate-600 text-center text-xl font-medium border-l-4 border-sky-400">
-              “{DATA.quote}”
-            </blockquote>
-          </main>
-        </div>
-      </div>
-
-      {/* --- Footer + 社交链接 (非卡片) --- */}
-      <footer className="border-t border-slate-100 pt-10 pb-6 px-6 md:px-12 lg:px-24 xl:px-32">
-        <div className="flex flex-col items-center gap-6">
-          <div className="flex gap-6">
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-400 hover:text-slate-900 transition"
-            >
-              <FaGithub size={20} />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-400 hover:text-slate-900 transition"
-            >
-              <FaTwitter size={20} />
-            </a>
-            <a
-              href="mailto:yijiale@example.com"
-              className="text-slate-400 hover:text-slate-900 transition"
-            >
-              <FaEnvelope size={20} />
-            </a>
-          </div>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-black text-slate-300 tracking-[0.2em] uppercase w-full">
-            <p>© 2026 Yijiale Portfolio / All Rights Reserved</p>
-            <div className="flex gap-8">
-              <span className="hover:text-sky-500 cursor-pointer transition">
-                Status: v4.0.2 Stable
-              </span>
-              <span className="hover:text-sky-500 cursor-pointer transition">
-                Built for Performance
-              </span>
             </div>
-          </div>
-        </div>
-      </footer>
+          </section>
+
+          {/* --- 2. 技术足迹 (时间线，无卡片) --- */}
+          <section className="space-y-6">
+            <h2 className="text-2xl font-black tracking-tight">技术足迹</h2>
+            <div className="relative pl-6 border-l border-slate-200 ml-4 space-y-8">
+              {DATA.timeline.map((item, idx) => (
+                <div key={idx} className="relative">
+                  <div className="absolute -left-[1.65rem] top-0 w-3 h-3 rounded-full bg-sky-400 border-2 border-white"></div>
+                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
+                    <span className="text-sm font-mono font-bold text-sky-600 sm:w-24 shrink-0">
+                      {item.year}
+                    </span>
+                    <p className="text-slate-700">{item.event}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* --- 3. 数据展示区 (数字指标，无边框) --- */}
+          <section className="grid grid-cols-2 md:grid-cols-4 gap-8 py-4">
+            {DATA.stats.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="text-4xl font-black text-slate-900">
+                  {stat.value}
+                </div>
+                <div className="text-xs uppercase tracking-wider text-slate-400 mt-1">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </section>
+
+          {/* --- 4. 关于我 (长篇叙事) --- */}
+          <section className="space-y-4">
+            <h2 className="text-2xl font-black tracking-tight">关于我</h2>
+            <div className="prose prose-slate max-w-none">
+              <p className="text-base leading-relaxed text-slate-600">
+                {DATA.about}
+              </p>
+            </div>
+          </section>
+
+          {/* --- 5. 引用金句 --- */}
+          <blockquote className="py-8 px-6 bg-slate-100 rounded-2xl italic text-slate-600 text-center text-xl font-medium border-l-4 border-sky-400">
+            “{DATA.quote}”
+          </blockquote>
+        </main>
+      </div>
     </div>
   );
 }
