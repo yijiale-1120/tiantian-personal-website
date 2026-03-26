@@ -1,318 +1,288 @@
 import {
   FaGithub,
+  FaLinkedin,
+  FaTwitter,
   FaEnvelope,
-  /*FaCode, 
-  FaTerminal, */
-  FaChevronRight,
-  FaDatabase,
-  FaCloudSun,
-  FaRobot,
-  FaMapMarkerAlt,
-  FaGraduationCap,
+  /* FaCode, 
+  FaTerminal, FaChevronRight, FaDatabase,*/ FaToolbox,
+  FaQuoteLeft,
+  FaArrowRight,
+  FaHistory,
 } from "react-icons/fa";
 
 /**
- * 易家乐的个人简历网站 - 博客响应式布局 (v4 适配版)
+ * 易家乐 (Yijiale) Personal Portfolio v5.0 - Narrative Edition
+ * 布局：响应式全宽流式布局
  */
 
-// --- 数据模型定义 ---
-const PROJECTS = [
-  {
-    title: "🌦️ 极简天气查询工具",
-    date: "MAR 2026",
-    tags: ["React 18", "TypeScript", "Vite", "Axios"],
-    icon: <FaCloudSun className="text-sky-500" />,
-    description:
-      "基于 OpenWeather API 开发的实时天气系统。攻克了高频请求下的性能瓶颈，并利用 Tailwind v4 的 CSS 变量实现了随天气自动切换的动态主题色系统。",
-    method: "通过本项目深度理解了组件生命周期与外部 API 的状态同步逻辑。",
-  },
-  {
-    title: "🤖 DeepChat AI 助手",
-    date: "APR 2026",
-    tags: ["Node.js", "Deepseek API", "Stream UI"],
-    icon: <FaRobot className="text-indigo-500" />,
-    description:
-      "一个全栈雏形项目。前端实现 Markdown 实时渲染，后端基于 Node.js 搭建中转服务，确保 API Key 安全的同时实现流式回复（Streaming）效果。",
-    method: "掌握了前后端分离架构下的跨域处理（CORS）与环境变量配置。",
-  },
-];
-
-const SKILLS = [
-  "React",
-  "TypeScript",
-  "Vite",
-  "Tailwind v4",
-  "Node.js",
-  "Git",
-  "Zustand",
-];
-
-const ROADMAP = [
-  {
-    phase: "01 / NOW",
-    title: "前端筑基 (Current)",
-    desc: "深耕 React 生态，掌握 TypeScript 强类型开发。目前已具备独立交付高质量响应式页面的能力。",
-    techs: ["React Hooks", "Component Design", "Tailwind Logic"],
-  },
-  {
-    phase: "02 / SOON",
-    title: "全栈进阶 (Evolution)",
-    desc: "引入 Next.js 15 框架，学习 Prisma 与 PostgreSQL 数据库建模，实现用户登录与数据持久化功能。",
-    techs: ["Next.js", "PostgreSQL", "Server Actions"],
-  },
-  {
-    phase: "03 / FUTURE",
-    title: "架构师视角 (Vision)",
-    desc: "探索 Web3 或 3D 渲染（Three.js），掌握 CI/CD 自动化流水线，成为真正意义上的工程化专家。",
-    techs: ["Three.js", "Docker", "CI/CD"],
-  },
-];
+const DATA = {
+  stats: [
+    { label: "Lines of Code", value: "50k+" },
+    { label: "Cups of Coffee", value: "240" },
+    { label: "Projects Built", value: "12" },
+    { label: "Learning Days", value: "365" },
+  ],
+  skills: [
+    "React",
+    "TypeScript",
+    "Vite",
+    "Tailwind v4",
+    "Next.js",
+    "Node.js",
+    "Express",
+    "PostgreSQL",
+    "Prisma",
+    "Zustand",
+    "Git",
+    "Docker",
+    "Postman",
+  ],
+  articles: [
+    {
+      date: "2026-03",
+      title: "从土木蓝图到 React 组件：逻辑的异曲同工",
+      readTime: "5 min",
+    },
+    {
+      date: "2026-02",
+      title: "Tailwind v4 迁移指南：为什么 CSS-first 是未来",
+      readTime: "8 min",
+    },
+    {
+      date: "2026-01",
+      title: "如何用 Node.js 优雅地封装一个 AI 中转层",
+      readTime: "12 min",
+    },
+  ],
+  timeline: [
+    { year: "2026", event: "启动全栈进阶计划，攻克分布式缓存与后端架构。" },
+    {
+      year: "2025",
+      event: "成功转型前端开发，交付 3 个高质量商业级单页应用。",
+    },
+    {
+      year: "2024",
+      event: "挥别土木工地，开启自学模式，完成首个 100 Days of Code。",
+    },
+  ],
+};
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white selection:bg-sky-100 selection:text-sky-900">
-      {/* --- 全局布局容器 (最大宽度 1600px) --- */}
-      <div className="mx-auto max-w-[1600px] px-6 py-6 md:px-12 md:py-10">
-        {/* 顶部微型装饰 */}
-        <header className="mb-12 flex items-center justify-between border-b border-slate-50 pb-6">
-          <div className="flex items-center gap-3 text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase">
-            <span className="h-2 w-2 rounded-full bg-sky-500"></span>
-            Yijiale.Builds / v4.0 Stable
+    <div className="min-h-screen flex flex-col bg-[#fafafa] text-slate-900 selection:bg-sky-100">
+      {/* --- 全宽容器 --- */}
+      <div className="w-full px-6 py-10 md:px-12 lg:px-24 xl:px-32 grow">
+        {/* --- 顶部导航 --- */}
+        <nav className="mb-24 flex items-center justify-between mix-blend-difference">
+          <div className="text-xl font-black tracking-tighter uppercase italic">
+            Yijiale<span className="text-sky-500">.</span>Dev
           </div>
-          <nav className="flex gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-            <a href="#projects" className="hover:text-sky-500 transition">
-              Works
+          <div className="hidden md:flex gap-10 text-[10px] font-black uppercase tracking-widest text-slate-400">
+            <a href="#story" className="hover:text-black transition">
+              The Story
             </a>
-            <a href="#roadmap" className="hover:text-sky-500 transition">
-              Roadmap
+            <a href="#archive" className="hover:text-black transition">
+              Archive
             </a>
-            <span className="hidden md:inline text-slate-200">|</span>
-            <span className="hidden md:inline">Built with Bricks & Bits</span>
-          </nav>
-        </header>
+            <a href="#arsenal" className="hover:text-black transition">
+              Arsenal
+            </a>
+            <a
+              href="#contact"
+              className="hover:text-sky-500 transition text-sky-600"
+            >
+              Hire Me
+            </a>
+          </div>
+        </nav>
 
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
-          {/* --- 左侧：个人名片 (Aside) - 占比 3/12 --- */}
-          <aside className="lg:col-span-3 lg:sticky lg:top-10 lg:h-[calc(100vh-100px)] flex flex-col justify-between">
-            <div className="space-y-8">
-              {/* 头像与标题 */}
-              <div className="space-y-6">
-                <div className="relative inline-block group">
-                  <div className="absolute -inset-1 bg-linear-to-r from-sky-400 to-blue-600 rounded-[2.5rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                  <div className="relative h-28 w-28 rounded-[2.2rem] bg-white border border-slate-100 flex items-center justify-center text-4xl font-black text-slate-900 shadow-sm">
-                    乐
-                  </div>
+        {/* --- 主布局 --- */}
+        <div className="grid grid-cols-1 gap-20 lg:grid-cols-12">
+          {/* --- 左侧：核心名片 (Sticky) --- */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-10 lg:h-fit">
+            <div className="space-y-10">
+              <div className="space-y-4">
+                <div className="h-16 w-16 bg-black rounded-full flex items-center justify-center text-white font-black text-2xl shadow-xl shadow-slate-200">
+                  乐
                 </div>
-
-                <div className="space-y-2">
-                  <h1 className="text-5xl font-black tracking-tighter text-slate-950">
-                    易家乐
-                  </h1>
-                  <p className="text-lg font-medium text-sky-600">
-                    Frontend Developer
-                  </p>
-                </div>
-              </div>
-
-              {/* 核心信息 */}
-              <div className="space-y-4 text-sm text-slate-500">
-                <p className="leading-relaxed">
-                  25岁，湖北工程学院土木本科毕业。
-                  <br />
-                  我将建筑行业的严谨融入代码，致力于构建高性能、可扩展的 Web
-                  应用。
+                <h1 className="text-6xl font-black tracking-tighter">易家乐</h1>
+                <p className="text-slate-400 font-mono text-sm uppercase tracking-widest">
+                  Building digital concrete
                 </p>
-
-                <div className="space-y-3 pt-4 font-medium">
-                  <div className="flex items-center gap-3">
-                    <FaMapMarkerAlt className="text-slate-300" /> 现居：湖北
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <FaGraduationCap className="text-slate-300" /> 土木工程 ·
-                    本科
-                  </div>
-                </div>
               </div>
 
-              {/* 标签云 */}
-              <div className="pt-4 flex flex-wrap gap-2">
-                {SKILLS.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-2.5 py-1 bg-slate-50 border border-slate-100 rounded-lg text-[11px] font-bold text-slate-500"
-                  >
-                    {skill}
-                  </span>
+              {/* 社交链接行 */}
+              <div className="flex gap-6 text-xl text-slate-300">
+                <FaGithub className="hover:text-black transition cursor-pointer" />
+                <FaLinkedin className="hover:text-sky-600 transition cursor-pointer" />
+                <FaTwitter className="hover:text-sky-400 transition cursor-pointer" />
+                <FaEnvelope className="hover:text-red-500 transition cursor-pointer" />
+              </div>
+
+              {/* 数据展示区 (Stats) */}
+              <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-10">
+                {DATA.stats.map((s) => (
+                  <div key={s.label}>
+                    <div className="text-2xl font-black text-slate-900">
+                      {s.value}
+                    </div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
+                      {s.label}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
-
-            {/* 侧边栏底部联系方式 */}
-            <div className="pt-8 space-y-4 border-t border-slate-100">
-              <a
-                href="mailto:yijiale@email.com"
-                className="group flex items-center gap-4 text-sm font-bold text-slate-900"
-              >
-                <div className="p-2.5 bg-slate-900 text-white rounded-xl transition-transform group-hover:scale-110">
-                  <FaEnvelope size={14} />
-                </div>
-                yijiale@email.com
-              </a>
-              <a
-                href="https://github.com"
-                className="group flex items-center gap-4 text-sm font-bold text-slate-900"
-              >
-                <div className="p-2.5 bg-slate-100 text-slate-900 rounded-xl transition-transform group-hover:bg-sky-500 group-hover:text-white">
-                  <FaGithub size={14} />
-                </div>
-                GitHub Profile
-              </a>
-            </div>
           </aside>
 
-          {/* --- 右侧：内容流 (Main) - 占比 9/12 --- */}
-          <main className="lg:col-span-9 space-y-24">
-            {/* 项目展示板块 */}
-            <section id="projects" className="space-y-10">
-              <div className="flex items-baseline gap-4">
-                <h2 className="text-4xl font-black tracking-tighter text-slate-950">
-                  Works / 项目归档
-                </h2>
-                <div className="h-1 flex-1 bg-slate-50 rounded-full"></div>
+          {/* --- 右侧：沉浸式流式内容 --- */}
+          <main className="lg:col-span-8 space-y-32 pb-20">
+            {/* 1. 长篇叙事区块 (Narrative) */}
+            <section id="story" className="relative">
+              <FaQuoteLeft className="absolute -left-10 -top-6 text-slate-100 text-6xl -z-10" />
+              <h2 className="text-3xl md:text-4xl font-black leading-tight tracking-tight mb-8">
+                “代码是另一种形式的建筑。在土木现场，我学会了
+                <span className="text-sky-500 underline decoration-4 underline-offset-8">
+                  地基的高度决定大楼的高度
+                </span>
+                ；在屏幕前，我用逻辑搭建我的世界。”
+              </h2>
+              <div className="prose prose-slate max-w-none text-slate-600 space-y-4 leading-relaxed">
+                <p>
+                  我今年 25
+                  岁，毕业于土木工程专业。曾经我的工具是安全帽和经纬仪，现在是
+                  VS Code 和 Chrome DevTools。
+                  转行并不是逃避，而是发现代码能提供更纯粹的创造力。
+                </p>
+                <p>
+                  目前我专注于 **React 生态系统**，并对 **Tailwind v4**
+                  的工程化效率着迷。我写代码不仅为了实现功能，更为了那份如蓝图般严丝合缝的结构美感。
+                </p>
               </div>
+            </section>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {PROJECTS.map((proj, i) => (
-                  <article
+            {/* 2. 文章/项目列表 (Minimal List) */}
+            <section id="archive" className="space-y-12">
+              <div className="flex items-center gap-4">
+                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-slate-300">
+                  Selected Writing
+                </h3>
+                <div className="h-px flex-1 bg-slate-100"></div>
+              </div>
+              <div className="space-y-0">
+                {DATA.articles.map((art, i) => (
+                  <div
                     key={i}
-                    className="group relative bg-white p-10 rounded-[3rem] border border-slate-100 hover:border-sky-200 transition-all duration-500 hover:shadow-2xl hover:shadow-sky-100/30"
+                    className="group py-8 border-b border-slate-100 flex items-center justify-between hover:px-4 transition-all duration-300 cursor-pointer"
                   >
-                    <div className="flex justify-between items-start mb-8">
-                      <div className="p-4 bg-slate-50 rounded-[1.5rem] group-hover:bg-sky-50 transition-colors duration-500">
-                        {proj.icon}
-                      </div>
-                      <span className="text-[10px] font-black text-slate-300 tracking-[0.2em]">
-                        {proj.date}
+                    <div className="flex items-baseline gap-6">
+                      <span className="font-mono text-[10px] text-slate-300">
+                        {art.date}
                       </span>
+                      <h4 className="text-xl font-bold group-hover:text-sky-600 transition">
+                        {art.title}
+                      </h4>
                     </div>
-
-                    <h3 className="text-2xl font-bold text-slate-950 mb-4 group-hover:text-sky-600 transition">
-                      {proj.title}
-                    </h3>
-                    <p className="text-sm text-slate-500 leading-relaxed mb-8">
-                      {proj.description}
-                    </p>
-
-                    <div className="space-y-6">
-                      <div className="flex flex-wrap gap-2">
-                        {proj.tags.map((t) => (
-                          <span
-                            key={t}
-                            className="px-3 py-1 bg-slate-50 text-[10px] font-extrabold text-slate-400 rounded-full uppercase tracking-wider"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-900 flex items-center gap-2 group-hover:gap-3 transition-all">
-                          查看技术文档 <FaChevronRight size={10} />
-                        </span>
-                      </div>
+                    <div className="flex items-center gap-4">
+                      <span className="hidden md:inline text-[10px] font-bold text-slate-300 uppercase italic">
+                        {art.readTime}
+                      </span>
+                      <FaArrowRight
+                        size={12}
+                        className="text-slate-200 group-hover:text-sky-500 group-hover:translate-x-2 transition-all"
+                      />
                     </div>
-                  </article>
+                  </div>
                 ))}
               </div>
             </section>
 
-            {/* 全栈升级路线图板块 */}
-            <section
-              id="roadmap"
-              className="relative overflow-hidden rounded-[3.5rem] bg-slate-950 p-10 md:p-20 text-slate-400"
-            >
-              {/* 背景装饰光晕 */}
-              <div className="absolute top-0 right-0 -mr-40 -mt-40 h-[500px] w-[500px] rounded-full bg-sky-500/10 blur-[120px]"></div>
+            {/* 3. 技能工具墙 (Arsenal Wall) */}
+            <section id="arsenal" className="space-y-10">
+              <div className="flex items-center gap-3 mb-8">
+                <FaToolbox className="text-sky-500" />
+                <h3 className="text-sm font-black uppercase tracking-widest">
+                  My Digital Arsenal
+                </h3>
+              </div>
+              <div className="flex flex-wrap gap-x-4 gap-y-6">
+                {DATA.skills.map((s) => (
+                  <span
+                    key={s}
+                    className="text-4xl md:text-5xl font-black text-slate-100 hover:text-sky-500 transition-colors duration-500 cursor-default"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs text-slate-400 font-medium">
+                不断扩充中... 正在深入探索分布式系统与 Rust 语言。
+              </p>
+            </section>
 
-              <div className="relative z-10 space-y-16">
-                <div className="space-y-4">
-                  <h2 className="text-4xl font-black text-white tracking-tighter italic">
-                    Roadmap v2.0
-                  </h2>
-                  <p className="max-w-xl text-slate-500">
-                    这不仅仅是未来的计划，更是我作为“跨界开发者”不断推倒重建、迭代升级的工程蓝图。
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  {ROADMAP.map((item, i) => (
-                    <div key={i} className="group space-y-6">
-                      <div className="text-[10px] font-black text-sky-500 tracking-[0.3em] uppercase">
-                        {item.phase}
-                      </div>
-                      <h4 className="text-xl font-bold text-white group-hover:translate-x-2 transition-transform">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs leading-relaxed text-slate-500">
-                        {item.desc}
-                      </p>
-                      <div className="flex flex-wrap gap-2 pt-4">
-                        {item.techs.map((t) => (
-                          <span
-                            key={t}
-                            className="text-[9px] font-bold text-slate-400 border border-slate-800 px-2 py-1 rounded"
-                          >
-                            #{t}
-                          </span>
-                        ))}
-                      </div>
+            {/* 4. 时间线 (Evolution) */}
+            <section className="space-y-10">
+              <div className="flex items-center gap-3 mb-8">
+                <FaHistory className="text-slate-300" />
+                <h3 className="text-sm font-black uppercase tracking-widest">
+                  Evolution Timeline
+                </h3>
+              </div>
+              <div className="relative border-l-2 border-slate-100 ml-4 pl-10 space-y-16 py-4">
+                {DATA.timeline.map((item, i) => (
+                  <div key={i} className="relative">
+                    <div className="absolute -left-12.25 top-1.5 h-4 w-4 rounded-full bg-white border-4 border-slate-900 shadow-sm"></div>
+                    <div className="font-mono text-xs font-black text-sky-500 mb-2">
+                      {item.year}
                     </div>
-                  ))}
-                </div>
-
-                {/* 全栈进阶的方法论说明 */}
-                <div className="pt-12 border-t border-slate-900 flex flex-col md:flex-row gap-10 items-center justify-between">
-                  <div className="flex items-center gap-6">
-                    <div className="h-14 w-14 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-sky-500 shadow-inner">
-                      <FaDatabase size={24} />
-                    </div>
-                    <div>
-                      <h5 className="text-sm font-bold text-white uppercase tracking-widest">
-                        全栈实现路径
-                      </h5>
-                      <p className="text-xs text-slate-500 mt-1">
-                        使用 Next.js 服务端 Actions 替代传统 API，通过 Prisma
-                        ORM 筑牢底层数据地基。
-                      </p>
-                    </div>
+                    <p className="text-sm text-slate-600 max-w-xl font-medium">
+                      {item.event}
+                    </p>
                   </div>
-                  <button className="w-full md:w-auto px-8 py-4 bg-white text-slate-950 text-xs font-black rounded-2xl hover:bg-sky-400 hover:text-white transition-all cursor-pointer">
-                    获取详细技术栈清单
-                  </button>
-                </div>
+                ))}
+              </div>
+            </section>
+
+            {/* 5. 底部联系区 (Final CTA) */}
+            <section
+              id="contact"
+              className="py-20 bg-slate-900 rounded-[3rem] p-12 text-center space-y-8 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 h-64 w-64 bg-sky-500/20 blur-[100px]"></div>
+              <h2 className="text-4xl font-black text-white tracking-tighter">
+                准备好开启下一个工程了吗？
+              </h2>
+              <p className="text-slate-400 max-w-md mx-auto text-sm">
+                正在寻找前端或全栈相关的开发机会。无论你在哪里，只要有代码，就有无限可能。
+              </p>
+              <div className="flex justify-center gap-4">
+                <a
+                  href="mailto:yijiale@email.com"
+                  className="px-8 py-4 bg-white text-slate-900 text-xs font-black rounded-full hover:bg-sky-500 hover:text-white transition-all uppercase tracking-widest"
+                >
+                  Send an Email
+                </a>
+                <button className="px-8 py-4 bg-slate-800 text-white text-xs font-black rounded-full hover:bg-slate-700 transition-all uppercase tracking-widest">
+                  Download Resume
+                </button>
               </div>
             </section>
           </main>
         </div>
-
-        {/* --- 底部 (Footer) --- */}
-        <footer className="mt-24 border-t border-slate-100 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">
-            © 2026 Yijiale.Builds / Designed by Yijiale
-          </div>
-          <div className="flex gap-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-            <span className="text-green-500 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
-              Portfolio Active
-            </span>
-            <a href="#" className="hover:text-slate-900 transition">
-              GitHub Source
-            </a>
-            <a href="#" className="hover:text-slate-900 transition">
-              RSS Feed
-            </a>
-          </div>
-        </footer>
       </div>
+
+      {/* --- Footer --- */}
+      <footer className="w-full px-6 py-10 md:px-12 lg:px-24 xl:px-32 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="text-[9px] font-black text-slate-300 uppercase tracking-[0.3em]">
+          Copyright © 2026 Yijiale.Dev — Built on Oxide Engine
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 bg-green-500 rounded-full"></span>
+          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+            Always Online / Ready to Build
+          </span>
+        </div>
+      </footer>
     </div>
   );
 }
