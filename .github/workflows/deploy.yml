@@ -2,39 +2,35 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main # 当推送到 main 分支时触发
-
-permissions:
-  contents: write # 允许推送代码到 gh-pages 分支
+    branches: [main]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout 代码
-        uses: actions/checkout@v4
-
-      - name: 安装 Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: 20
+      - run: npm install -g pnpm
+      - run: pnpm install
+      - run: pnpm run build
 
-      - name: 安装 pnpm
-        uses: pnpm/action-setup@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          version: 8
+          path: ./dist
 
-      - name: 安装依赖
-        run: pnpm install
-
-      - name: 构建项目
-        run: pnpm run build
-
-      - name: 部署到 GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist # Vite 构建输出目录
-          branch: gh-pages # 部署到的分支（会自动创建）
-          clean: true # 清理旧文件
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
