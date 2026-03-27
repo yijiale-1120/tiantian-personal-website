@@ -1,12 +1,14 @@
 // src/pages/adminFeedbacks.tsx
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/zh-cn"; // 可选中文
+import "dayjs/locale/zh-cn";
+import { FaCommentDots } from "react-icons/fa"; // 新增装饰图标
+import GlobalNav from "../components/GlobalNav";
+import GlobalFooter from "../components/GlobalFooter";
 
 dayjs.extend(relativeTime);
-dayjs.locale("zh-cn"); // 设置中文相对时间
+dayjs.locale("zh-cn");
 
-// Mock 数据 - 后续替换为真实 API 请求
 const mockFeedbacks = [
   {
     id: 1,
@@ -33,35 +35,50 @@ const mockFeedbacks = [
 
 export default function AdminFeedbacks() {
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">用户反馈</h1>
-        <p className="text-slate-500 mb-8">
-          共收到 {mockFeedbacks.length} 条反馈
-        </p>
+    <div className="min-h-screen flex flex-col bg-amber-50">
+      <GlobalNav />
+      <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8 fade-in-up">
+        {" "}
+        {/* 页面淡入动画 */}
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-3 mb-2">
+            {" "}
+            {/* 新增标题装饰 */}
+            <FaCommentDots className="text-primary text-2xl" />
+            <h1 className="text-3xl font-bold text-neutral-900">用户反馈</h1>
+          </div>
+          <p className="text-neutral-500 mb-8">
+            共收到 {mockFeedbacks.length} 条反馈
+          </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockFeedbacks.map((feedback) => (
-            <div
-              key={feedback.id}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 border border-slate-100"
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <h3 className="font-bold text-slate-900">{feedback.name}</h3>
-                  <p className="text-xs text-slate-400">{feedback.email}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mockFeedbacks.map((feedback) => (
+              <div
+                key={feedback.id}
+                className="glass-card p-6 hover:shadow-xl transition-all duration-300 group" // 改用玻璃卡片，增加悬停效果
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h3 className="font-bold text-neutral-900">
+                      {feedback.name}
+                    </h3>
+                    <p className="text-xs text-neutral-400">{feedback.email}</p>
+                  </div>
+                  <span className="text-xs text-neutral-400 bg-white/50 backdrop-blur-sm px-2 py-1 rounded-full">
+                    {dayjs(feedback.createdAt).fromNow()}
+                  </span>
                 </div>
-                <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-full">
-                  {dayjs(feedback.createdAt).fromNow()}
-                </span>
+                <p className="text-neutral-600 text-sm leading-relaxed mt-2">
+                  {feedback.content}
+                </p>
+                {/* 新增装饰性下划线 */}
+                <div className="mt-4 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent"></div>
               </div>
-              <p className="text-slate-600 text-sm leading-relaxed mt-2">
-                {feedback.content}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      </main>
+      <GlobalFooter />
     </div>
   );
 }
