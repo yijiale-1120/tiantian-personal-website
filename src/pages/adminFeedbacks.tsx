@@ -1,39 +1,71 @@
 // src/pages/adminFeedbacks.tsx
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
+import * as dayjsModule from "dayjs";
+import * as relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/zh-cn";
 import { FaCommentDots } from "react-icons/fa"; // 新增装饰图标
 import GlobalNav from "../components/GlobalNav";
 import GlobalFooter from "../components/GlobalFooter";
+import { useEffect, useState } from "react";
 
-dayjs.extend(relativeTime);
+// dayjs/plugin/relativeTime uses `export = plugin` (no default export),
+// so we need a safe interop fallback for different bundler/type behaviors.
+type DayjsStatic = {
+  (date?: import("dayjs").ConfigType): import("dayjs").Dayjs;
+  extend: typeof import("dayjs").extend;
+  locale: typeof import("dayjs").locale;
+};
+
+// Convert `export = dayjs` module namespace to a callable dayjs function.
+const dayjs =
+  (dayjsModule as unknown as { default?: DayjsStatic }).default ??
+  (dayjsModule as unknown as DayjsStatic);
+
+type ExtendArg = Parameters<typeof dayjs.extend>[0];
+const relativeTimePlugin =
+  (relativeTime as unknown as { default?: ExtendArg }).default ??
+  (relativeTime as unknown as ExtendArg);
+dayjs.extend(relativeTimePlugin);
 dayjs.locale("zh-cn");
 
-const mockFeedbacks = [
-  {
-    id: 1,
-    name: "张三",
-    email: "zhangsan@example.com",
-    content: "网站风格很酷，内容也很丰富！期待更多技术文章。",
-    createdAt: "2025-03-26T10:30:00Z",
-  },
-  {
-    id: 2,
-    name: "李四",
-    email: "lisi@example.com",
-    content: "反馈页面设计得不错，提交成功提示很友好。",
-    createdAt: "2025-03-25T15:20:00Z",
-  },
-  {
-    id: 3,
-    name: "王五",
-    email: "wangwu@example.com",
-    content: "建议增加 RSS 订阅功能，方便追更。",
-    createdAt: "2025-03-24T09:45:00Z",
-  },
-];
+type Feedback = {
+  id: number;
+  name: string;
+  email: string;
+  content: string;
+  createdAt: string;
+};
 
 export default function AdminFeedbacks() {
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  useEffect(() => {
+    let mounted = true;
+
+    const fetchFeedbacks = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/feedback");
+        const payload = await res.json().catch(() => ({}));
+        if (!res.ok || payload?.success !== true) {
+          throw new Error(payload?.message || `Request failed with ${res.status}`);
+        }
+        if (mounted) setFeedbacks(payload.feedbacks ?? []);
+      } catch (err) {
+        console.error(err);
+        if (mounted) setErrorMsg("加载失败，请稍后重试");
+      }
+    };
+
+    fetchFeedbacks();
+    // "Real-time" update: periodically refresh the list.
+    const timer = window.setInterval(fetchFeedbacks, 3000);
+
+    return () => {
+      mounted = false;
+      window.clearInterval(timer);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-amber-50">
       <GlobalNav />
@@ -48,11 +80,11 @@ export default function AdminFeedbacks() {
             <h1 className="text-3xl font-bold text-neutral-900">用户反馈</h1>
           </div>
           <p className="text-neutral-500 mb-8">
-            共收到 {mockFeedbacks.length} 条反馈
+            共收到 {feedbacks.length} 条反馈
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockFeedbacks.map((feedback) => (
+            {feedbacks.map((feedback) => (
               <div
                 key={feedback.id}
                 className="glass-card p-6 hover:shadow-xl transition-all duration-300 group" // 改用玻璃卡片，增加悬停效果
@@ -76,6 +108,10 @@ export default function AdminFeedbacks() {
               </div>
             ))}
           </div>
+
+          {errorMsg && (
+            <p className="mt-6 text-sm text-red-600 text-center">{errorMsg}</p>
+          )}
         </div>
       </main>
       <GlobalFooter />

@@ -26,16 +26,33 @@ export default function Feedback() {
 
   const onSubmit = async (data: FormData) => {
     setSubmitStatus("loading");
+    setErrorMsg("");
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("提交的数据:", data);
+      const res = await fetch("http://localhost:3000/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const payload = await res
+        .json()
+        .catch(() => ({} as { success?: boolean; message?: string }));
+
+      if (!res.ok || payload?.success !== true) {
+        throw new Error(payload?.message || `Request failed with ${res.status}`);
+      }
+
       setSubmitStatus("success");
+      // You can use returned id if you want to show it to users.
+      // const { id } = payload as { success: true; id: number };
       reset();
       setTimeout(() => setSubmitStatus("idle"), 3000);
     } catch (err) {
       console.error(err);
       setSubmitStatus("error");
-      setErrorMsg("提交失败，请重试");
+      setErrorMsg(
+        err instanceof Error ? err.message : "提交失败，请重试"
+      );
       setTimeout(() => setSubmitStatus("idle"), 3000);
     }
   };
