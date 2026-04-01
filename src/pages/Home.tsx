@@ -1,6 +1,7 @@
 // src/pages/Home.tsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/use-auth.ts";
 import { FaGithub, FaTwitter, FaLinkedin, FaEnvelope } from "react-icons/fa";
 
 // ---------- 数据（与原来一致）----------
@@ -73,22 +74,44 @@ const DATA = {
     "我是一名热爱技术的开发者，拥有土木工程背景。转行以来，我始终保持着对新技术的好奇心，喜欢通过构建项目来深化理解。我相信优秀的代码不仅能够运行，更应具备可读性和可维护性。当前我正在探索全栈领域，希望未来能成为一名独立的创作者。",
 };
 
-// 右上角按钮组（四个）
+// 右上角：未登录「登录 + 反馈」；已登录「已登录(灰、不可点) + 反馈」——仅把原来的「写反馈」换成「已登录」
 function ActionButtons() {
+  const { token, isReady } = useAuth();
+
+  const feedbackLinkClass =
+    "px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 text-slate-700 hover:bg-sky-500 hover:text-white transition-all shadow-sm text-sm font-medium";
+
   return (
     <div className="fixed top-6 right-6 z-50 flex gap-3">
-      <Link
-        to="/" // 登录按钮暂时跳转首页（可修改）
-        className="px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 text-slate-700 hover:bg-sky-500 hover:text-white transition-all shadow-sm text-sm font-medium"
-      >
-        登录
-      </Link>
-      <Link
-        to="/feedback"
-        className="px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 text-slate-700 hover:bg-sky-500 hover:text-white transition-all shadow-sm text-sm font-medium"
-      >
-        反馈
-      </Link>
+      {!isReady ? (
+        <span className="px-4 py-2 rounded-full bg-white/60 text-slate-400 text-sm font-medium border border-slate-100">
+          …
+        </span>
+      ) : token ? (
+        <>
+          <span
+            className="px-4 py-2 rounded-full bg-slate-100/90 border border-slate-200 text-slate-400 text-sm font-medium cursor-not-allowed select-none"
+            aria-disabled="true"
+          >
+            已登录
+          </span>
+          <Link to="/feedback" className={feedbackLinkClass}>
+            反馈
+          </Link>
+        </>
+      ) : (
+        <>
+          <Link
+            to="/login"
+            className="px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 text-slate-700 hover:bg-sky-500 hover:text-white transition-all shadow-sm text-sm font-medium"
+          >
+            登录
+          </Link>
+          <Link to="/feedback" className={feedbackLinkClass}>
+            反馈
+          </Link>
+        </>
+      )}
       <button className="px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 text-slate-700 hover:bg-sky-500 hover:text-white transition-all shadow-sm text-sm font-medium">
         订阅
       </button>

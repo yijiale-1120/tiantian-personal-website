@@ -3,9 +3,10 @@ import * as dayjsModule from "dayjs";
 import * as relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/zh-cn";
 import { FaCommentDots } from "react-icons/fa"; // 新增装饰图标
-import GlobalNav from "../components/GlobalNav";
-import GlobalFooter from "../components/GlobalFooter";
+import GlobalNav from "../components/GlobalNav.tsx";
+import GlobalFooter from "../components/GlobalFooter.tsx";
 import { useEffect, useState } from "react";
+import { apiClient } from "../lib/axios.ts";
 
 // dayjs/plugin/relativeTime uses `export = plugin` (no default export),
 // so we need a safe interop fallback for different bundler/type behaviors.
@@ -44,10 +45,13 @@ export default function AdminFeedbacks() {
 
     const fetchFeedbacks = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/feedback");
-        const payload = await res.json().catch(() => ({}));
-        if (!res.ok || payload?.success !== true) {
-          throw new Error(payload?.message || `Request failed with ${res.status}`);
+        const { data: payload } = await apiClient.get<{
+          success?: boolean;
+          message?: string;
+          feedbacks?: Feedback[];
+        }>("/api/feedback");
+        if (payload?.success !== true) {
+          throw new Error(payload?.message || "加载失败");
         }
         if (mounted) setFeedbacks(payload.feedbacks ?? []);
       } catch (err) {
