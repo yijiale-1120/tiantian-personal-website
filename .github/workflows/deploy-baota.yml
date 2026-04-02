@@ -1,0 +1,114 @@
+# push 到 main 时：构建前端 + 后端，通过 SSH/rsync 同步到宝塔服务器并重启 PM2
+# 需在仓库 Settings → Secrets and variables → Actions 中配置下列 Secrets（见仓库内《GitHub Actions 部署宝塔说明.md》）
+#
+# 自定义 Secrets 在 job.env 中集中映射，便于 IDE/actionlint 校验，并避免在 with: 中直接写 secrets.* 触发的误报。
+
+name: Deploy to Baota
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-baota
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "24"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+      DEPLOY_WEB_ROOT: ${{ secrets.DEPLOY_WEB_ROOT }}
+      DEPLOY_BACKEND_DIR: ${{ secrets.DEPLOY_BACKEND_DIR }}
+      DEPLOY_SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
+      VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            backend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --dir backend install --frozen-lockfile
+
+      - name: Build frontend
+        run: pnpm run build
+
+      - name: Build backend
+        run: pnpm --dir backend run build
+
+      - name: Start ssh-agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ env.DEPLOY_SSH_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          PORT="${DEPLOY_SSH_PORT:-22}"
+          ssh-keyscan -p "$PORT" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+
+      - name: Rsync frontend (dist → 网站根目录)
+        run: |
+          set -e
+          P="${DEPLOY_SSH_PORT:-22}"
+          rsync -avz --delete \
+            -e "ssh -p $P -o StrictHostKeyChecking=yes" \
+            ./dist/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_WEB_ROOT}/"
+
+      - name: Rsync backend (dist + 锁文件，供服务器 pnpm install --prod)
+        run: |
+          set -e
+          P="${DEPLOY_SSH_PORT:-22}"
+          SSH="ssh -p $P -o StrictHostKeyChecking=yes"
+          rsync -avz -e "$SSH" ./backend/dist/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_BACKEND_DIR}/dist/"
+          rsync -avz -e "$SSH" ./backend/package.json ./backend/pnpm-lock.yaml \
+            "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_BACKEND_DIR}/"
+
+      - name: Remote — 安装生产依赖并重启 PM2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ env.DEPLOY_HOST }}
+          username: ${{ env.DEPLOY_USER }}
+          key: ${{ env.DEPLOY_SSH_KEY }}
+          port: ${{ env.DEPLOY_SSH_PORT != '' && env.DEPLOY_SSH_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -e
+            cd "${{ env.DEPLOY_BACKEND_DIR }}"
+            export PATH="/usr/local/bin:/root/.local/share/pnpm:$PATH"
+            if ! command -v pnpm >/dev/null 2>&1; then
+              npm install -g pnpm@10
+            fi
+            pnpm install --frozen-lockfile --prod
+            if pm2 describe nest-api >/dev/null 2>&1; then
+              pm2 restart nest-api
+            else
+              pm2 start dist/main.js --name nest-api
+            fi
+            pm2 save
