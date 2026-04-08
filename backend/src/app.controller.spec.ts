@@ -13,8 +13,10 @@ describe('AppController', () => {
   });
 
   describe('health', () => {
-    it('should return ok', () => {
-      expect(appController.health()).toEqual({ ok: true });
+    it('should return ok with instanceId', () => {
+      const result = appController.health();
+      expect(result.ok).toBe(true);
+      expect(typeof result.instanceId).toBe('string');
     });
   });
 });

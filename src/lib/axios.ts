@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiUrl } from "./api.ts";
+import { apiUrl } from "./api";
 
 export const TOKEN_KEY = "access_token";
 
@@ -25,7 +25,7 @@ apiClient.interceptors.response.use(
       localStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem("username");
       const path = window.location.pathname;
-      const base = import.meta.env.BASE_URL.replace(/\/$/, "") || "";
+      const base = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/$/, "");
       if (!path.endsWith("/login")) {
         const qs = `?from=${encodeURIComponent(path + window.location.search)}`;
         window.location.href = `${base}/login${qs}`;

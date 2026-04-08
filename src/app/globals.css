@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0ea5e9; /* sky-500 */
-  --color-primary-dark: #0284c7; /* sky-600 */
-  --color-secondary: #8b5cf6; /* violet-500 */
+  --color-primary: #0ea5e9;
+  --color-primary-dark: #0284c7;
+  --color-secondary: #8b5cf6;
   --color-neutral-50: #fafafa;
   --color-neutral-100: #f5f5f5;
   --color-neutral-200: #e5e5e5;
@@ -12,12 +12,13 @@
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "Fira Code", monospace;
 }
-/* 博客正文排版优化 */
+
 @layer base {
   body {
     font-family: var(--font-sans);
     @apply text-neutral-800 antialiased;
   }
+
   h1,
   h2,
   h3,
@@ -26,12 +27,15 @@
   h6 {
     @apply font-bold tracking-tight text-neutral-900;
   }
+
   h1 {
     @apply text-5xl md:text-6xl;
   }
+
   h2 {
     @apply text-3xl md:text-4xl;
   }
+
   h3 {
     @apply text-2xl md:text-3xl;
   }
@@ -41,23 +45,22 @@
   .glass-card {
     @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl;
   }
+
   .glass-nav {
     @apply bg-white/60 backdrop-blur-md border-b border-white/20;
   }
-}
 
-@layer components {
   .btn-hover-scale {
     @apply transition-transform duration-200 hover:scale-105 active:scale-95;
   }
 }
 
-/* index.css */
 @keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

@@ -1,7 +1,9 @@
-// src/pages/Home.tsx
+"use client";
+
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuth } from "../hooks/use-auth.ts";
+import Image from "next/image";
+import Link from "next/link";
+import { useAuth } from "../hooks/use-auth";
 import { FaGithub, FaTwitter, FaLinkedin, FaEnvelope } from "react-icons/fa";
 
 // ---------- 数据（与原来一致）----------
@@ -95,19 +97,19 @@ function ActionButtons() {
           >
             已登录
           </span>
-          <Link to="/feedback" className={feedbackLinkClass}>
+          <Link href="/feedback" className={feedbackLinkClass}>
             反馈
           </Link>
         </>
       ) : (
         <>
           <Link
-            to="/login"
+            href="/login"
             className="px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 text-slate-700 hover:bg-sky-500 hover:text-white transition-all shadow-sm text-sm font-medium"
           >
             登录
           </Link>
-          <Link to="/feedback" className={feedbackLinkClass}>
+          <Link href="/feedback" className={feedbackLinkClass}>
             反馈
           </Link>
         </>
@@ -131,13 +133,15 @@ export default function Home() {
       <ActionButtons />
 
       {/* 顶部 1/4 大图 */}
-      <div
-        className="h-[25vh] bg-cover bg-center relative"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
-        }}
-      >
+      <div className="h-[25vh] bg-cover bg-center relative overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+          alt="Hero background"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
         <div className="absolute inset-0 bg-black/30" />
       </div>
 

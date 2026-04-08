@@ -1,5 +1,4 @@
-// src/components/GlobalNav.tsx
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 
 const pill =
@@ -15,13 +14,13 @@ export default function GlobalNav() {
         </span>
       </div>
       <div className="flex flex-wrap items-center justify-end gap-3 text-sm font-bold uppercase tracking-widest">
-        <Link to="/" className={pill}>
+        <Link href="/" className={pill}>
           Home
         </Link>
-        <Link to="/feedback" className={pill}>
+        <Link href="/feedback" className={pill}>
           Feedback
         </Link>
-        <Link to="/admin/feedbacks" className={pill}>
+        <Link href="/admin/feedbacks" className={pill}>
           Admin
         </Link>
         <a

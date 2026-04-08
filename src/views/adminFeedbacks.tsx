@@ -1,31 +1,15 @@
-// src/pages/adminFeedbacks.tsx
-import * as dayjsModule from "dayjs";
-import * as relativeTime from "dayjs/plugin/relativeTime";
+"use client";
+
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/zh-cn";
 import { FaCommentDots } from "react-icons/fa"; // 新增装饰图标
-import GlobalNav from "../components/GlobalNav.tsx";
-import GlobalFooter from "../components/GlobalFooter.tsx";
+import GlobalNav from "../components/GlobalNav";
+import GlobalFooter from "../components/GlobalFooter";
 import { useEffect, useState } from "react";
-import { apiClient } from "../lib/axios.ts";
+import { apiClient } from "../lib/axios";
 
-// dayjs/plugin/relativeTime uses `export = plugin` (no default export),
-// so we need a safe interop fallback for different bundler/type behaviors.
-type DayjsStatic = {
-  (date?: import("dayjs").ConfigType): import("dayjs").Dayjs;
-  extend: typeof import("dayjs").extend;
-  locale: typeof import("dayjs").locale;
-};
-
-// Convert `export = dayjs` module namespace to a callable dayjs function.
-const dayjs =
-  (dayjsModule as unknown as { default?: DayjsStatic }).default ??
-  (dayjsModule as unknown as DayjsStatic);
-
-type ExtendArg = Parameters<typeof dayjs.extend>[0];
-const relativeTimePlugin =
-  (relativeTime as unknown as { default?: ExtendArg }).default ??
-  (relativeTime as unknown as ExtendArg);
-dayjs.extend(relativeTimePlugin);
+dayjs.extend(relativeTime);
 dayjs.locale("zh-cn");
 
 type Feedback = {

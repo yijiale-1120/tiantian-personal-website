@@ -1,13 +1,15 @@
-// src/pages/Feedback.tsx
+"use client";
+
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"; // 新增图标
-import GlobalNav from "../components/GlobalNav.tsx";
-import GlobalFooter from "../components/GlobalFooter.tsx";
-import { useAuth } from "../hooks/use-auth.ts";
-import { apiClient } from "../lib/axios.ts";
+import GlobalNav from "../components/GlobalNav";
+import GlobalFooter from "../components/GlobalFooter";
+import { useAuth } from "../hooks/use-auth";
+import { apiClient } from "../lib/axios";
 
 type FormData = {
   name: string;
@@ -17,7 +19,7 @@ type FormData = {
 
 export default function Feedback() {
   const { token, isReady } = useAuth();
-  const location = useLocation();
+  const pathname = usePathname();
   const {
     register,
     handleSubmit,
@@ -91,8 +93,7 @@ export default function Feedback() {
             </h2>
             <p className="text-sm text-neutral-600 mb-6">提交反馈前需要先登录账号。</p>
             <Link
-              to="/login"
-              state={{ from: location }}
+              href={`/login?from=${encodeURIComponent(pathname ?? "/")}`}
               className="inline-flex w-full justify-center px-4 py-3 rounded-xl bg-linear-to-r from-primary to-primary-dark text-white font-semibold text-sm hover:opacity-95 transition-opacity btn-hover-scale"
             >
               前往登录

@@ -1,11 +1,13 @@
+"use client";
+
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaExclamationTriangle } from "react-icons/fa";
-import GlobalNav from "../components/GlobalNav.tsx";
-import GlobalFooter from "../components/GlobalFooter.tsx";
-import { useAuth } from "../hooks/use-auth.ts";
+import GlobalNav from "../components/GlobalNav";
+import GlobalFooter from "../components/GlobalFooter";
+import { useAuth } from "../hooks/use-auth";
 
 type FormData = {
   username: string;
@@ -17,18 +19,16 @@ export default function Login() {
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from =
-    (location.state as { from?: { pathname: string } } | null)?.from?.pathname ??
-    "/";
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const from = searchParams?.get("from") ?? "/";
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     setErrorMsg("");
     try {
       await login(data.username, data.password);
-      navigate(from, { replace: true });
+      router.replace(from);
     } catch (e) {
       let msg = "登录失败，请检查账号密码";
       if (axios.isAxiosError(e)) {

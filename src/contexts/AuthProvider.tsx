@@ -1,9 +1,11 @@
+"use client";
+
 import axios from "axios";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
-import { apiUrl } from "../lib/api.ts";
-import { DEV_SERVER_INSTANCE_STORAGE_KEY } from "../lib/dev-server-session.ts";
-import { TOKEN_KEY } from "../lib/axios.ts";
-import { AuthContext } from "./auth-context-instance.ts";
+import { apiUrl } from "../lib/api";
+import { DEV_SERVER_INSTANCE_STORAGE_KEY } from "../lib/dev-server-session";
+import { TOKEN_KEY } from "../lib/axios";
+import { AuthContext } from "./auth-context-instance";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
@@ -22,11 +24,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const prev = localStorage.getItem(DEV_SERVER_INSTANCE_STORAGE_KEY);
 
         // Demo/检查用：后端重启 → instanceId 变化 → 清登录态，便于每次重启 dev:server 后演示登录页。
-        if (
-          prev != null &&
-          instanceId != null &&
-          prev !== instanceId
-        ) {
+        if (prev != null && instanceId != null && prev !== instanceId) {
           localStorage.removeItem(TOKEN_KEY);
           localStorage.removeItem("username");
         }
@@ -84,7 +82,5 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [token, username, isReady, login, logout],
   );
 
-  return (
-    <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

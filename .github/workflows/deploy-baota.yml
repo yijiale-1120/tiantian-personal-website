@@ -30,7 +30,8 @@ jobs:
       DEPLOY_WEB_ROOT: ${{ secrets.DEPLOY_WEB_ROOT }}
       DEPLOY_BACKEND_DIR: ${{ secrets.DEPLOY_BACKEND_DIR }}
       DEPLOY_SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
-      VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+      NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+      NEXT_PUBLIC_BASE_PATH: /tiantian-personal-website
 
     steps:
       - name: Checkout
@@ -73,13 +74,13 @@ jobs:
           PORT="${DEPLOY_SSH_PORT:-22}"
           ssh-keyscan -p "$PORT" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
 
-      - name: Rsync frontend (dist → 网站根目录)
+      - name: Rsync frontend (out → 网站根目录)
         run: |
           set -e
           P="${DEPLOY_SSH_PORT:-22}"
           rsync -avz --delete \
             -e "ssh -p $P -o StrictHostKeyChecking=yes" \
-            ./dist/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_WEB_ROOT}/"
+            ./out/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_WEB_ROOT}/"
 
       - name: Rsync backend (dist + 锁文件，供服务器 pnpm install --prod)
         run: |

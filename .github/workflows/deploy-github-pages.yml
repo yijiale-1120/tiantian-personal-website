@@ -50,7 +50,7 @@ jobs:
       - name: 上传构建产物
         uses: actions/upload-pages-artifact@v4
         with:
-          path: "./dist"
+          path: "./out"
 
       - name: 部署到 GitHub Pages
         id: deployment

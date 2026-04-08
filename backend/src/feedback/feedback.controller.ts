@@ -16,6 +16,7 @@ export class FeedbackController {
   constructor(private readonly feedback: FeedbackService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.feedback.findAll();
   }
